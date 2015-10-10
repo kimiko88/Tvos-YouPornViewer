@@ -9,9 +9,49 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>YoupornViewerOSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>YoupornVieweriOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D623736E1BC9148A0034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D62373841BC9148A0034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D623738F1BC9148A0034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D62373A71BC919830034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D62373B71BC919830034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D62373C21BC919830034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D69BCD711BC1B8C500B4B98C</key>
 		<dict>
 			<key>primary</key>
