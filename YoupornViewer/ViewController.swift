@@ -314,6 +314,7 @@ class ViewController: UIViewController {
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow + 1)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow + 1)
         return CGRectMake(CGFloat(x), CGFloat(y), width, height)
+        
     }
     
     func createButton(image: UIImage, index: Int,video: Video){
