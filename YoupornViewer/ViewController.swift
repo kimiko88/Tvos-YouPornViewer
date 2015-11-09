@@ -162,11 +162,8 @@ class ViewController: UIViewController {
                     self.previousButton(i)
                     i++
                 }
-
-                
                 self.homeButton(i)
                 i++
-
                 self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
                 self.scroll.scrollEnabled = true
             }
@@ -312,7 +309,6 @@ class ViewController: UIViewController {
     func calculatePosition(index: Int, image: UIImage) -> CGRect
     {
         let numImagePerRow = Int(bounds.width) / (Int(image.size.width) + 20)
-        
         let width = image.size.width
         let height = image.size.height
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow + 1)
@@ -321,26 +317,32 @@ class ViewController: UIViewController {
     }
     
     func createButton(image: UIImage, index: Int,video: Video){
-               let button = UIButton(type: UIButtonType.System)
-                button.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
+        let button = UIButton(type: UIButtonType.System)
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
         button.titleLabel?.lineBreakMode = .ByTruncatingTail
         button.titleLabel?.backgroundColor = UIColor.blackColor()
-        button.frame =  calculatePosition(index, image: image)
-        button.setBackgroundImage(image, forState: .Normal)
-        button.setTitle(String(htmlEncodedString: video.Title), forState: .Normal)
-        button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), forState: .Normal)
-       button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
+        button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
+        button.setTitle(video.Title, forState: .Normal)
+        button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        button.frame =  calculatePosition(index, image: image)
+        button.setBackgroundImage(image, forState: .Focused)
         button.tag = index - 6
         button.addTarget(self, action: "tapped:", forControlEvents: .PrimaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
-//        scroll.clipsToBounds = true
+        scroll.clipsToBounds = true
         }
     
     
     func chargeImageAsync(image: String, index: Int, video: Video){
         let url = NSURL(string: image)
+        if((url == nil || (url?.hashValue) == nil)){
+            let image = UIImage(named: "ImageNotfound.png")
+            dispatch_async(dispatch_get_main_queue()){
+                self.createButton(image!,index: index,video: video)
+            }
+        }else{
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             let image = UIImage(data: data!)
              dispatch_async(dispatch_get_main_queue()){
@@ -348,6 +350,7 @@ class ViewController: UIViewController {
             }
         }
         task.resume()
+        }
     }
 
 

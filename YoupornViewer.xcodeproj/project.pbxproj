@@ -26,6 +26,8 @@
 		D69BCD8B1BC1B8C600B4B98C /* YoupornViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD8A1BC1B8C600B4B98C /* YoupornViewerTests.swift */; };
 		D69BCD961BC1B8C600B4B98C /* YoupornViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD951BC1B8C600B4B98C /* YoupornViewerUITests.swift */; };
 		D69BCDA41BC1D01A00B4B98C /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCDA31BC1D01A00B4B98C /* VideoController.swift */; };
+		D6AF5E041BF112FE00581B55 /* ImageNotfound.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AF5E031BF112FE00581B55 /* ImageNotfound.png */; };
+		D6AF5E061BF11B5000581B55 /* ImageNotfound1.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AF5E051BF11B5000581B55 /* ImageNotfound1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		D69BCD951BC1B8C600B4B98C /* YoupornViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoupornViewerUITests.swift; sourceTree = "<group>"; };
 		D69BCD971BC1B8C600B4B98C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D69BCDA31BC1D01A00B4B98C /* VideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
+		D6AF5E031BF112FE00581B55 /* ImageNotfound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageNotfound.png; sourceTree = "<group>"; };
+		D6AF5E051BF11B5000581B55 /* ImageNotfound1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageNotfound1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,7 @@
 		D62373701BC9148A0034EAF6 /* YoupornVieweriOS */ = {
 			isa = PBXGroup;
 			children = (
+				D6AF5E051BF11B5000581B55 /* ImageNotfound1.png */,
 				D62373711BC9148A0034EAF6 /* AppDelegate.swift */,
 				D62373731BC9148A0034EAF6 /* ViewController.swift */,
 				D62373751BC9148A0034EAF6 /* Main.storyboard */,
@@ -202,6 +207,7 @@
 		D69BCD741BC1B8C500B4B98C /* YoupornViewer */ = {
 			isa = PBXGroup;
 			children = (
+				D6AF5E031BF112FE00581B55 /* ImageNotfound.png */,
 				D69BCD751BC1B8C500B4B98C /* AppDelegate.swift */,
 				D69BCD771BC1B8C500B4B98C /* ViewController.swift */,
 				D69BCD7C1BC1B8C500B4B98C /* Main.storyboard */,
@@ -405,6 +411,7 @@
 			files = (
 				D623737F1BC9148A0034EAF6 /* LaunchScreen.storyboard in Resources */,
 				D623737C1BC9148A0034EAF6 /* Assets.xcassets in Resources */,
+				D6AF5E061BF11B5000581B55 /* ImageNotfound1.png in Resources */,
 				D62373771BC9148A0034EAF6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,6 +435,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D69BCD801BC1B8C600B4B98C /* Assets.xcassets in Resources */,
+				D6AF5E041BF112FE00581B55 /* ImageNotfound.png in Resources */,
 				D69BCD7E1BC1B8C500B4B98C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -815,6 +823,7 @@
 				D62373981BC9148A0034EAF6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D623739E1BC9148A0034EAF6 /* Build configuration list for PBXNativeTarget "YoupornVieweriOSTests" */ = {
 			isa = XCConfigurationList;
@@ -823,6 +832,7 @@
 				D623739A1BC9148A0034EAF6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D623739F1BC9148A0034EAF6 /* Build configuration list for PBXNativeTarget "YoupornVieweriOSUITests" */ = {
 			isa = XCConfigurationList;
@@ -831,6 +841,7 @@
 				D623739C1BC9148A0034EAF6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D69BCD6D1BC1B8C500B4B98C /* Build configuration list for PBXProject "YoupornViewer" */ = {
 			isa = XCConfigurationList;
