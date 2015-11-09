@@ -30,9 +30,11 @@ class ViewController: UIViewController {
     var bounds = UIScreen.mainScreen().bounds
     var scroll = UIScrollView()
     var field = UITextField()
+    var images = [UIImage]()
     var isSearch: Bool = false
     
     override func viewDidLoad() {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
         super.viewDidLoad()
         self.view = self.scroll;
         self.scroll.backgroundColor = UIColor.blackColor()
@@ -40,8 +42,21 @@ class ViewController: UIViewController {
         
     }
     
- 
-
+    func rotated()
+    {
+        if(UIDeviceOrientationIsValidInterfaceOrientation(UIDevice.currentDevice().orientation))
+        {
+            let subViews = self.scroll.subviews
+            for subview in subViews{
+                subview.removeFromSuperview()
+            }
+            bounds = UIScreen.mainScreen().bounds
+            self.createButton()
+        }
+        
+    }
+    
+    
     func showPage(actualPage: Int){
         videos = [Video]()
         let subViews = self.scroll.subviews
@@ -79,42 +94,47 @@ class ViewController: UIViewController {
                     self.videos.append(video)
                 }
             }
-            dispatch_async(dispatch_get_main_queue()){
-                var i = 1;
-                self.TextField(i)
-                i += 3
-                self.searchButton(i)
-                i += 2
-                for video in self.videos{
-                    self.chargeImageAsync(video.ImageLink,index :i, video: video)
-                    i++;
-                }
-                
-                
-                self.nextButton(i)
-                i++;
-                if(actualPage > 1){
-                    self.previousButton(i)
-                    i++
-                }
-            
-                self.homeButton(i)
-                i++
-
-                self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
-                self.scroll.scrollEnabled = true
-            }
+            self.createButton()
         }
         task.resume()
     }
     
+    func createButton(){
+        dispatch_async(dispatch_get_main_queue()){
+            var i = 0;
+            self.TextField(i)
+            i++
+            self.searchButton(i)
+            i++
+            for video in self.videos{
+                self.chargeImageAsync(video.ImageLink,index :i, video: video)
+                i++;
+            }
+            
+            
+            self.nextButton(i)
+            i++;
+            if(self.actualPage > 1){
+                self.previousButton(i)
+                i++
+            }
+            
+            self.homeButton(i)
+            i++
+            
+            self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 50))
+            self.scroll.scrollEnabled = true
+        }
+    }
+
     func searchText(textToSearch: String){
         videos = [Video]()
         let subViews = self.scroll.subviews
         for subview in subViews{
             subview.removeFromSuperview()
         }
-        let url = NSURL(string: "http://www.youporn.com/search/?query=\(textToSearch.stringByReplacingOccurrencesOfString(" ", withString: "+"))&page=\(actualPage)")
+        let search = textToSearch.stringByReplacingOccurrencesOfString(" ", withString: "+")
+        let url = NSURL(string: "http://www.youporn.com/search/?query=\(search)&page=\(actualPage)")
         
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
@@ -145,37 +165,16 @@ class ViewController: UIViewController {
                     self.videos.append(video)
                 }
             }
-            dispatch_async(dispatch_get_main_queue()){
-                var i = 1;
-                self.TextField(i)
-                i += 3
-                self.searchButton(i)
-                i += 2
-                for video in self.videos{
-                    self.chargeImageAsync(video.ImageLink,index :i, video: video)
-                    i++;
-                }
-         
-                self.nextButton(i)
-                i++;
-                if(self.actualPage > 1){
-                    self.previousButton(i)
-                    i++
-                }
-                self.homeButton(i)
-                i++
-                self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
-                self.scroll.scrollEnabled = true
-            }
+           self.createButton()
         }
         task.resume()
     }
-
+    
     
     
     func TextField(index: Int)
     {
-        field.frame =  calculatePositionLarger(index)
+        field.frame =  calculatePosition(index)
         field.backgroundColor = UIColor.whiteColor()
         scroll.addSubview(field)
         
@@ -184,9 +183,9 @@ class ViewController: UIViewController {
     func searchButton(index: Int){
         let button = UIButton(type: UIButtonType.System)
         button.backgroundColor = UIColor.blackColor()
-            button.frame =  calculatePosition(index)
+        button.frame =  calculatePosition(index)
         button.setTitle("Search", forState: .Normal)
-//        button.tag = index + 1)
+        //        button.tag = index + 1)
         button.addTarget(self, action: "search:", forControlEvents: .PrimaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
@@ -205,7 +204,7 @@ class ViewController: UIViewController {
     }
     
     
-
+    
     
     func nextButton(index: Int){
         let button = UIButton(type: UIButtonType.System)
@@ -216,9 +215,9 @@ class ViewController: UIViewController {
         button.addTarget(self, action: "next:", forControlEvents: .PrimaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
-       
-//        scroll.contentSize = CGSize(width: bounds.width, height: CGFloat(y + 180))
-//        scroll.scrollEnabled = true
+        
+        //        scroll.contentSize = CGSize(width: bounds.width, height: CGFloat(y + 180))
+        //        scroll.scrollEnabled = true
     }
     
     
@@ -230,7 +229,7 @@ class ViewController: UIViewController {
         button.addTarget(self, action: "previous:", forControlEvents: .PrimaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
-//        scroll.clipsToBounds = true
+        //        scroll.clipsToBounds = true
     }
     
     func tapped(sender: UIButton) {
@@ -252,7 +251,7 @@ class ViewController: UIViewController {
     func previous(sender: UIButton) {
         actualPage--
         if(!isSearch){
-        self.showPage(actualPage)
+            self.showPage(actualPage)
         }
         else{
             self.searchText(field.text!)
@@ -284,33 +283,24 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     
     func calculatePosition(index: Int) -> CGRect
     {
-        let numImagePerRow = Int(bounds.width) / (Int(300) + 20)
-        let width = CGFloat(300)
-        let height =  CGFloat(169)
+        let width = CGFloat(300)/2 - 15
+        let height =  CGFloat(169)/2 - 15
+        let numImagePerRow = Int(bounds.width) / (Int(width) + 20)
         let x = ((index) % numImagePerRow) * Int(width) + 20 * ((index) % numImagePerRow + 1)
         let y = (index) / numImagePerRow * Int(height) + 20 * ((index) / numImagePerRow + 1)
         return CGRectMake(CGFloat(x), CGFloat(y), width, height)
     }
     
-    func calculatePositionLarger(index: Int) -> CGRect
-    {
-        let numImagePerRow = Int(bounds.width) / (Int(300) + 20)
-        let width = CGFloat(600)
-        let height =  CGFloat(169)
-        let x = ((index) % numImagePerRow) * Int(width) + 20 * ((index) % numImagePerRow + 1)
-        let y = (index) / numImagePerRow * Int(height) + 20 * ((index) / numImagePerRow + 1)
-        return CGRectMake(CGFloat(x), CGFloat(y), width, height)
-    }
     
     func calculatePosition(index: Int, image: UIImage) -> CGRect
     {
-        let numImagePerRow = Int(bounds.width) / (Int(image.size.width) + 20)
-        let width = image.size.width
-        let height = image.size.height
+        let width = image.size.width/2 - 15.0
+        let height = image.size.height/2 - 15.0
+        let numImagePerRow = Int(bounds.width) / (Int(width) + 20)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow + 1)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow + 1)
         return CGRectMake(CGFloat(x), CGFloat(y), width, height)
@@ -321,38 +311,40 @@ class ViewController: UIViewController {
         button.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
         button.titleLabel?.lineBreakMode = .ByTruncatingTail
         button.titleLabel?.backgroundColor = UIColor.blackColor()
-        button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), forState: .Normal)
-        button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
-        button.setTitle(video.Title, forState: .Normal)
-        button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         button.frame =  calculatePosition(index, image: image)
-        button.setBackgroundImage(image, forState: .Focused)
-        button.tag = index - 6
+        button.setBackgroundImage(image, forState: .Normal)
+        button.setTitle(String(htmlEncodedString: video.Title), forState: .Normal)
+        button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), forState: .Normal)
+        button.titleLabel?.font = UIFont(name: "Times New Roman", size: 10)
+        button.tag = index - 2
         button.addTarget(self, action: "tapped:", forControlEvents: .PrimaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
-        scroll.clipsToBounds = true
-        }
+        //        scroll.clipsToBounds = true
+    }
+    
     
     func chargeImageAsync(image: String, index: Int, video: Video){
         let url = NSURL(string: image)
-        if((url == nil || (url?.hashValue) == nil)){
-            let image = UIImage(named: "ImageNotfound.png")
+           if((url == nil || (url?.hashValue) == nil)){
+            let image = UIImage(named: "ImageNotfound1.png")
             dispatch_async(dispatch_get_main_queue()){
                 self.createButton(image!,index: index,video: video)
             }
         }else{
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let image = UIImage(data: data!)
-             dispatch_async(dispatch_get_main_queue()){
-            self.createButton(image!,index: index,video: video)
+            let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+                let image = UIImage(data: data!)
+                dispatch_async(dispatch_get_main_queue()){
+                    self.createButton(image!,index: index,video: video)
+                }
             }
+            task.resume()
         }
-        task.resume()
-        }
+
     }
-
-
+    
+    
 }
 
 
