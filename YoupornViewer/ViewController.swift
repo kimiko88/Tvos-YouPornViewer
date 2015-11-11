@@ -266,8 +266,8 @@ class ViewController: UIViewController {
     
     
     func search(sender: UIButton){
-        self.searchText(field.text!)
-        self.actualPage = 1
+     self.actualPage = 1
+     self.searchText(field.text!)
     }
     
     
@@ -323,7 +323,7 @@ class ViewController: UIViewController {
         button.titleLabel?.backgroundColor = UIColor.blackColor()
         button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), forState: .Normal)
         button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
-        button.setTitle(video.Title, forState: .Normal)
+        button.setTitle(String(htmlEncodedString: video.Title), forState: .Normal)
         button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         button.frame =  calculatePosition(index, image: image)
         button.setBackgroundImage(image, forState: .Focused)
