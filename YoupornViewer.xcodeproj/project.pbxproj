@@ -18,6 +18,13 @@
 		D62373951BC9148A0034EAF6 /* YoupornVieweriOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62373941BC9148A0034EAF6 /* YoupornVieweriOSUITests.swift */; };
 		D62373A11BC915FD0034EAF6 /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62373A01BC915FD0034EAF6 /* VideoController.swift */; };
 		D62373A31BC916070034EAF6 /* SeeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62373A21BC916070034EAF6 /* SeeVideo.swift */; };
+		D6805F1A1BF4E5420021663D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6805F191BF4E5420021663D /* AppDelegate.swift */; };
+		D6805F1C1BF4E5420021663D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6805F1B1BF4E5420021663D /* ViewController.swift */; };
+		D6805F1E1BF4E5420021663D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6805F1D1BF4E5420021663D /* Assets.xcassets */; };
+		D6805F211BF4E5420021663D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6805F1F1BF4E5420021663D /* Main.storyboard */; };
+		D6805F271BF4F0410021663D /* ImageNotfound2.png in Resources */ = {isa = PBXBuildFile; fileRef = D6805F261BF4F0410021663D /* ImageNotfound2.png */; };
+		D6805F291BF504E90021663D /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6805F281BF504E90021663D /* VideoController.swift */; };
+		D6805F2B1BF504F50021663D /* SeeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6805F2A1BF504F50021663D /* SeeVideo.swift */; };
 		D69BCD761BC1B8C500B4B98C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD751BC1B8C500B4B98C /* AppDelegate.swift */; };
 		D69BCD781BC1B8C500B4B98C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD771BC1B8C500B4B98C /* ViewController.swift */; };
 		D69BCD7B1BC1B8C500B4B98C /* YoupornViewer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD791BC1B8C500B4B98C /* YoupornViewer.xcdatamodeld */; };
@@ -79,6 +86,15 @@
 		D62373961BC9148A0034EAF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D62373A01BC915FD0034EAF6 /* VideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
 		D62373A21BC916070034EAF6 /* SeeVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeVideo.swift; sourceTree = "<group>"; };
+		D6805F171BF4E5420021663D /* YoupornViewerOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoupornViewerOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6805F191BF4E5420021663D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D6805F1B1BF4E5420021663D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D6805F1D1BF4E5420021663D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D6805F201BF4E5420021663D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D6805F221BF4E5420021663D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6805F261BF4F0410021663D /* ImageNotfound2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageNotfound2.png; sourceTree = "<group>"; };
+		D6805F281BF504E90021663D /* VideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
+		D6805F2A1BF504F50021663D /* SeeVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeVideo.swift; sourceTree = "<group>"; };
 		D69BCD721BC1B8C500B4B98C /* YoupornViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoupornViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69BCD751BC1B8C500B4B98C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D69BCD771BC1B8C500B4B98C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +129,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D623738D1BC9148A0034EAF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6805F141BF4E5420021663D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -178,6 +201,21 @@
 			path = YoupornVieweriOSUITests;
 			sourceTree = "<group>";
 		};
+		D6805F181BF4E5420021663D /* YoupornViewerOSX */ = {
+			isa = PBXGroup;
+			children = (
+				D6805F261BF4F0410021663D /* ImageNotfound2.png */,
+				D6805F191BF4E5420021663D /* AppDelegate.swift */,
+				D6805F1B1BF4E5420021663D /* ViewController.swift */,
+				D6805F1D1BF4E5420021663D /* Assets.xcassets */,
+				D6805F1F1BF4E5420021663D /* Main.storyboard */,
+				D6805F221BF4E5420021663D /* Info.plist */,
+				D6805F281BF504E90021663D /* VideoController.swift */,
+				D6805F2A1BF504F50021663D /* SeeVideo.swift */,
+			);
+			path = YoupornViewerOSX;
+			sourceTree = "<group>";
+		};
 		D69BCD691BC1B8C500B4B98C = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +225,7 @@
 				D62373701BC9148A0034EAF6 /* YoupornVieweriOS */,
 				D62373881BC9148A0034EAF6 /* YoupornVieweriOSTests */,
 				D62373931BC9148A0034EAF6 /* YoupornVieweriOSUITests */,
+				D6805F181BF4E5420021663D /* YoupornViewerOSX */,
 				D69BCD731BC1B8C500B4B98C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -200,6 +239,7 @@
 				D623736F1BC9148A0034EAF6 /* YoupornVieweriOS.app */,
 				D62373851BC9148A0034EAF6 /* YoupornVieweriOSTests.xctest */,
 				D62373901BC9148A0034EAF6 /* YoupornVieweriOSUITests.xctest */,
+				D6805F171BF4E5420021663D /* YoupornViewerOSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -294,6 +334,23 @@
 			productReference = D62373901BC9148A0034EAF6 /* YoupornVieweriOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		D6805F161BF4E5420021663D /* YoupornViewerOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6805F251BF4E5420021663D /* Build configuration list for PBXNativeTarget "YoupornViewerOSX" */;
+			buildPhases = (
+				D6805F131BF4E5420021663D /* Sources */,
+				D6805F141BF4E5420021663D /* Frameworks */,
+				D6805F151BF4E5420021663D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YoupornViewerOSX;
+			productName = YoupornViewerOSX;
+			productReference = D6805F171BF4E5420021663D /* YoupornViewerOSX.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D69BCD711BC1B8C500B4B98C /* YoupornViewer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D69BCD9A1BC1B8C600B4B98C /* Build configuration list for PBXNativeTarget "YoupornViewer" */;
@@ -353,6 +410,7 @@
 		D69BCD6A1BC1B8C500B4B98C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "fabrizio chimienti";
 				TargetAttributes = {
@@ -367,6 +425,9 @@
 					D623738F1BC9148A0034EAF6 = {
 						CreatedOnToolsVersion = 7.1;
 						TestTargetID = D623736E1BC9148A0034EAF6;
+					};
+					D6805F161BF4E5420021663D = {
+						CreatedOnToolsVersion = 7.1.1;
 					};
 					D69BCD711BC1B8C500B4B98C = {
 						CreatedOnToolsVersion = 7.1;
@@ -400,6 +461,7 @@
 				D623736E1BC9148A0034EAF6 /* YoupornVieweriOS */,
 				D62373841BC9148A0034EAF6 /* YoupornVieweriOSTests */,
 				D623738F1BC9148A0034EAF6 /* YoupornVieweriOSUITests */,
+				D6805F161BF4E5420021663D /* YoupornViewerOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -427,6 +489,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6805F151BF4E5420021663D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6805F1E1BF4E5420021663D /* Assets.xcassets in Resources */,
+				D6805F211BF4E5420021663D /* Main.storyboard in Resources */,
+				D6805F271BF4F0410021663D /* ImageNotfound2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +554,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				D62373951BC9148A0034EAF6 /* YoupornVieweriOSUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6805F131BF4E5420021663D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6805F1C1BF4E5420021663D /* ViewController.swift in Sources */,
+				D6805F2B1BF504F50021663D /* SeeVideo.swift in Sources */,
+				D6805F291BF504E90021663D /* VideoController.swift in Sources */,
+				D6805F1A1BF4E5420021663D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,6 +638,14 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		D6805F1F1BF4E5420021663D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6805F201BF4E5420021663D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		D69BCD7C1BC1B8C500B4B98C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -578,7 +669,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornVieweriOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -594,7 +685,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornVieweriOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -655,6 +746,36 @@
 				SDKROOT = iphoneos;
 				TEST_TARGET_NAME = YoupornVieweriOS;
 				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+		D6805F231BF4E5420021663D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = YoupornViewerOSX/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewerOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D6805F241BF4E5420021663D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = YoupornViewerOSX/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewerOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -839,6 +960,15 @@
 			buildConfigurations = (
 				D623739B1BC9148A0034EAF6 /* Debug */,
 				D623739C1BC9148A0034EAF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6805F251BF4E5420021663D /* Build configuration list for PBXNativeTarget "YoupornViewerOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6805F231BF4E5420021663D /* Debug */,
+				D6805F241BF4E5420021663D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

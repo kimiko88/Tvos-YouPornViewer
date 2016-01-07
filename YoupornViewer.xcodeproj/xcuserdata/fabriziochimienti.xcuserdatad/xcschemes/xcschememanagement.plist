@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>YoupornViewerOSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>YoupornVieweriOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -43,6 +48,11 @@
 			<true/>
 		</dict>
 		<key>D62373C21BC919830034EAF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D6805F161BF4E5420021663D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     var isSearch: Bool = false
     
     override func viewDidLoad() {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
         super.viewDidLoad()
         self.view = self.scroll;
         self.scroll.backgroundColor = UIColor.blackColor()
@@ -78,7 +78,7 @@ class ViewController: UIViewController {
                     var tempTitle = ""
                     var start = false
                     i++
-                    while((splitted[i].rangeOfString("\">")) == nil)
+                    while((splitted[i].rangeOfString("\n")) == nil)
                     {
                         i++
                         if(splitted[i].rangeOfString("title=\"") != nil){
@@ -126,7 +126,7 @@ class ViewController: UIViewController {
             self.scroll.scrollEnabled = true
         }
     }
-
+    
     func searchText(textToSearch: String){
         videos = [Video]()
         let subViews = self.scroll.subviews
@@ -149,7 +149,7 @@ class ViewController: UIViewController {
                     var tempTitle = ""
                     var start = false
                     i++
-                    while((splitted[i].rangeOfString("\">")) == nil)
+                    while((splitted[i].rangeOfString("\n")) == nil)
                     {
                         i++
                         if(splitted[i].rangeOfString("title=\"") != nil){
@@ -165,7 +165,7 @@ class ViewController: UIViewController {
                     self.videos.append(video)
                 }
             }
-           self.createButton()
+            self.createButton()
         }
         task.resume()
     }
@@ -327,7 +327,7 @@ class ViewController: UIViewController {
     
     func chargeImageAsync(image: String, index: Int, video: Video){
         let url = NSURL(string: image)
-           if((url == nil || (url?.hashValue) == nil)){
+        if((url == nil || (url?.hashValue) == nil)){
             let image = UIImage(named: "ImageNotfound1.png")
             dispatch_async(dispatch_get_main_queue()){
                 self.createButton(image!,index: index,video: video)
@@ -341,11 +341,9 @@ class ViewController: UIViewController {
             }
             task.resume()
         }
-
+        
     }
     
     
 }
-
-
 
