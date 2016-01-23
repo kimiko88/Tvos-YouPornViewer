@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  YoupornVieweriOS
 //
-//  Created by fabrizio chimienti on 10/10/15.
-//  Copyright © 2015 fabrizio chimienti. All rights reserved.
+//  Created by kimiko88 on 10/10/15.
+//  Copyright © 2015 kimiko88. All rights reserved.
 //
 
 import UIKit

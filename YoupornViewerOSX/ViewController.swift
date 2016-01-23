@@ -2,18 +2,9 @@
 //  ViewController.swift
 //  YoupornViewerOSX
 //
-//  Created by fabrizio chimienti on 12/11/15.
-//  Copyright © 2015 fabrizio chimienti. All rights reserved.
+//  Created by kimiko88 on 12/11/15.
+//  Copyright © 2015 kimiko88. All rights reserved.
 //
-
-//
-//  ViewController.swift
-//  YoupornViewer
-//
-//  Created by fabrizio chimienti on 04/10/15.
-//  Copyright © 2015 fabrizio chimienti. All rights reserved.
-//
-
 
 import Cocoa
 
