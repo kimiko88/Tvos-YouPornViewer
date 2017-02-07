@@ -20,7 +20,7 @@ class DownloadLink{
 
 class VideoController: UIViewController {
 
-    var bounds = UIScreen.mainScreen().bounds
+    var bounds = UIScreen.main.bounds
     var video: Video!
     
     var downloadLinks = [DownloadLink]()
@@ -28,28 +28,29 @@ class VideoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let url = NSURL(string: self.video.Link)
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let url = URL(string: self.video.Link)
+        let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
+            let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
             let splitted = strin.characters.split{$0 == " "}.map(String.init)
-            for (var i = 0; i < splitted.count; i++)
+            var i = 0
+            while i < splitted.count
             {
                 let oo = splitted[i]
 
-                if (oo.rangeOfString("downloadOption") != nil){
+                if (oo.range(of: "downloadOption") != nil){
                     var tempLink = ""
                     var tempTitle = ""
                     var start = false
-                    i++
-                    while((splitted[i].rangeOfString("/a>")) == nil)
+                    i += 1
+                    while((splitted[i].range(of: "/a>")) == nil)
                     {
-                        i++
-                        if(splitted[i].rangeOfString("href=") != nil){
+                        i += 1
+                        if(splitted[i].range(of: "href=") != nil){
                            tempLink = splitted[i]
                         }
                         
-                        if(splitted[i].rangeOfString("\'>") != nil && tempLink.characters.count > 2){
+                        if(splitted[i].range(of: "\'>") != nil && tempLink.characters.count > 2){
                             start = true
                         }
                         if(start)
@@ -58,57 +59,58 @@ class VideoController: UIViewController {
                         }
                      
                     }
-                    let link = tempLink.stringByReplacingOccurrencesOfString("href='", withString: "")
-                    let title = tempTitle.stringByReplacingOccurrencesOfString(" Video'>", withString: "").stringByReplacingOccurrencesOfString("</a>\n<span", withString: "")
+                    let link = tempLink.replacingOccurrences(of: "href='", with: "")
+                    let title = tempTitle.replacingOccurrences(of: " Video'>", with: "").replacingOccurrences(of: "</a>\n<span", with: "")
                     self.downloadLinks.append(DownloadLink(link: link, title: title))
                 }
+                i += 1
             }
             
             
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
             var i = 0
             
             for downloadLink in self.downloadLinks{
-                if(downloadLink.Title.rangeOfString("3GP") == nil)//AVPlayer for tvos can't play 3GP file
+                if(downloadLink.Title.range(of: "3GP") == nil)//AVPlayer for tvos can't play 3GP file
                 {
                                    self.createButton(downloadLink,index: i)
                 }
-                                    i++;
+                                    i += 1;
                                 }
             }
-        }
+        }) 
         task.resume()
     }
     
     
-    func tapped(sender: UIButton) {
+    func tapped(_ sender: UIButton) {
         let object = self.downloadLinks[sender.tag]
 
-       self.performSegueWithIdentifier("SeeVideo", sender: object)
+       self.performSegue(withIdentifier: "SeeVideo", sender: object)
     }
 
   
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         let video = sender as! DownloadLink
         if segue.identifier == "SeeVideo"{
-            let vc = segue.destinationViewController as! AVVideoPlayerController
+            let vc = segue.destination as! AVVideoPlayerController
             vc.downloadVideo = video
         }
     }
     
-    func createButton(download: DownloadLink, index: Int){
+    func createButton(_ download: DownloadLink, index: Int){
         let numImagePerRow = Int(bounds.width) / (Int(1600) + 20)
         let width = CGFloat(1600)
         let height = CGFloat(180)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow)
-        let button = UIButton(type: UIButtonType.System)
-        button.frame =  CGRectMake(CGFloat(x), CGFloat(y), width, height)
-        button.setTitle(download.Title, forState: .Normal)
+        let button = UIButton(type: UIButtonType.system)
+        button.frame =  CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
+        button.setTitle(download.Title, for: UIControlState())
         button.tag = index
-        button.addTarget(self, action: "tapped:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: #selector(VideoController.tapped(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         self.view.addSubview(button)
         self.view.clipsToBounds = true

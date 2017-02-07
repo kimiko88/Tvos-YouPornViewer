@@ -27,7 +27,7 @@ class Video{
 class ViewController: UIViewController {
     var videos = [Video]()
     var actualPage = 1;
-    var bounds = UIScreen.mainScreen().bounds
+    var bounds = UIScreen.main.bounds
     var scroll = UIScrollView()
     var field = UITextField()
     var isSearch: Bool = false
@@ -37,53 +37,55 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = self.scroll;
-        self.scroll.backgroundColor = UIColor.blackColor()
+        self.scroll.backgroundColor = UIColor.black
         showPage(actualPage)
         
     }
     
     
     
-    func showPage(actualPage: Int){
+    func showPage(_ actualPage: Int){
         videos = [Video]()
         self.isSearch = false
         let subViews = self.scroll.subviews
         for subview in subViews{
             subview.removeFromSuperview()
         }
-        let url = NSURL(string: "http://www.youporn.com/?page=\(actualPage)")
+        let url = URL(string: "http://www.youporn.com/?page=\(actualPage)")
         
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
+            let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
             let splitted = strin.characters.split{$0 == " "}.map(String.init)
             
-            for (var i = 0; i < splitted.count; i++)
+            var i = 0
+            while i < splitted.count
             {
                 let oo = splitted[i]
-                if (oo.rangeOfString("href=\"/watch/") != nil && splitted[i + 1].rangeOfString("class='video-box-image'") != nil){
-                    let link = oo.stringByReplacingOccurrencesOfString("href=\"",withString: "http://www.youporn.com").stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("\">", withString: "")
+                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
+                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
                     var tempTitle = ""
                     var start = false
-                    i++
-                    while((splitted[i].rangeOfString("\n")) == nil)
+                    i += 1
+                    while((splitted[i].range(of: "\n")) == nil)
                     {
-                        i++
-                        if(splitted[i].rangeOfString("title=\"") != nil){
+                        i += 1
+                        if(splitted[i].range(of: "title=\"") != nil){
                             start = true
                         }
                         if(start){
                             tempTitle += " " + splitted[i]
                         }
                     }
-                    let title = tempTitle.stringByReplacingOccurrencesOfString(" title=\"", withString: "").stringByReplacingOccurrencesOfString("\">\n<img", withString: "")
-                    let img = splitted[i+1].stringByReplacingOccurrencesOfString("src=\"", withString: "").stringByReplacingOccurrencesOfString("\"", withString: "")
+                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
+                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
                         print(img)
                     let video = Video(link: link, imageLink: img, title: title)
                     self.videos.append(video)
                 }
+                i += 1
             }
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 var i = 1;
                 self.TextField(i)
                 i += 3
@@ -92,38 +94,38 @@ class ViewController: UIViewController {
 //                
 //                self.sortButton(i,text: "relevance:")
 //                i++
-                self.sortButton(i,text: "views:")
-                 i++
-                self.sortButton(i,text: "rating:")
-                 i++
-                self.sortButton(i,text: "duration:")
-                 i++
-                self.sortButton(i,text: "date:")
+                self.sortButton(i,text: #selector(ViewController.views(_:)))
+                 i += 1
+                self.sortButton(i,text: #selector(ViewController.rating(_:)))
+                 i += 1
+                self.sortButton(i,text: #selector(ViewController.duration(_:)))
+                 i += 1
+                self.sortButton(i,text: #selector(ViewController.date(_:)))
                  i += 2
                 for video in self.videos{
                     self.chargeImageAsync(video.ImageLink,index :i, video: video)
-                    i++;
+                    i += 1;
                 }
                 
                 
                 self.nextButton(i)
-                i++;
+                i += 1;
                 if(actualPage > 1){
                     self.previousButton(i)
-                    i++
+                    i += 1
                 }
                 
                 self.homeButton(i)
-                i++
+                i += 1
                 
                 self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
-                self.scroll.scrollEnabled = true
+                self.scroll.isScrollEnabled = true
             }
-        }
+        }) 
         task.resume()
     }
     
-    func searchText(textToSearch: String){
+    func searchText(_ textToSearch: String){
         videos = [Video]()
         let subViews = self.scroll.subviews
         for subview in subViews{
@@ -131,278 +133,284 @@ class ViewController: UIViewController {
         }
         self.isSearch = true
         self.selectedSort = "relevance"
-        let url = NSURL(string: "http://www.youporn.com/search/?query=\(textToSearch.stringByReplacingOccurrencesOfString(" ", withString: "+"))&page=\(actualPage)")
+        let url = URL(string: "http://www.youporn.com/search/?query=\(textToSearch.replacingOccurrences(of: " ", with: "+"))&page=\(actualPage)")
         
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
+            let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
             let splitted = strin.characters.split{$0 == " "}.map(String.init)
             
-            for (var i = 0; i < splitted.count; i++)
+            var i = 0
+            while i < splitted.count
             {
                 let oo = splitted[i]
-                if (oo.rangeOfString("href=\"/watch/") != nil && splitted[i + 1].rangeOfString("class='video-box-image'") != nil){
-                    let link = oo.stringByReplacingOccurrencesOfString("href=\"",withString: "http://www.youporn.com").stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("\">", withString: "")
+                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
+                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
                     var tempTitle = ""
                     var start = false
-                    i++
-                    while((splitted[i].rangeOfString("\n")) == nil)
+                    i += 1
+                    while((splitted[i].range(of: "\n")) == nil)
                     {
-                        i++
-                        if(splitted[i].rangeOfString("title=\"") != nil){
+                        i += 1
+                        if(splitted[i].range(of: "title=\"") != nil){
                             start = true
                         }
                         if(start){
                             tempTitle += " " + splitted[i]
                         }
                     }
-                    let title = tempTitle.stringByReplacingOccurrencesOfString(" title=\"", withString: "").stringByReplacingOccurrencesOfString("\">\n<img", withString: "")
-                    let img = splitted[i+1].stringByReplacingOccurrencesOfString("src=\"", withString: "").stringByReplacingOccurrencesOfString("\"", withString: "")
+                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
+                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
                     let video = Video(link: link, imageLink: img, title: title)
                     self.videos.append(video)
                 }
+                i+=1
             }
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 var i = 1;
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
                 i += 3
 
-                self.sortButton(i,text: "relevance:")
-                i++
-                self.sortButton(i,text: "views:")
-                i++
-                self.sortButton(i,text: "rating:")
-                i++
-                self.sortButton(i,text: "duration:")
-                i++
-                self.sortButton(i,text: "date:")
-                i++
+                self.sortButton(i,text: #selector(ViewController.relevance(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.views(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.rating(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.duration(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.date(_:)))
+                i += 1
                 for video in self.videos{
                     self.chargeImageAsync(video.ImageLink,index :i, video: video)
-                    i++;
+                    i += 1;
                 }
                 
                 self.nextButton(i)
-                i++;
+                i += 1;
                 if(self.actualPage > 1){
                     self.previousButton(i)
-                    i++
+                    i += 1
                 }
                 self.homeButton(i)
-                i++
+                i += 1
                 self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
-                self.scroll.scrollEnabled = true
+                self.scroll.isScrollEnabled = true
             }
-        }
+        }) 
         task.resume()
     }
     
     
     
-    func SortByHome(howSort: String){
+    func SortByHome(_ howSort: String){
         videos = [Video]()
         let subViews = self.scroll.subviews
         for subview in subViews{
             subview.removeFromSuperview()
         }
-        let url = NSURL(string: "http://www.youporn.com/browse/\(howSort)/?page=\(actualPage)")
+        let url = URL(string: "http://www.youporn.com/browse/\(howSort)/?page=\(actualPage)")
         
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
+            let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
             let splitted = strin.characters.split{$0 == " "}.map(String.init)
             
-            for (var i = 0; i < splitted.count; i++)
+            var i = 0
+            while i < splitted.count
             {
                 let oo = splitted[i]
-                if (oo.rangeOfString("href=\"/watch/") != nil && splitted[i + 1].rangeOfString("class='video-box-image'") != nil){
-                    let link = oo.stringByReplacingOccurrencesOfString("href=\"",withString: "http://www.youporn.com").stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("\">", withString: "")
+                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
+                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
                     var tempTitle = ""
                     var start = false
-                    i++
-                    while((splitted[i].rangeOfString("\n")) == nil)
+                    i += 1
+                    while((splitted[i].range(of: "\n")) == nil)
                     {
-                        i++
-                        if(splitted[i].rangeOfString("title=\"") != nil){
+                        i += 1
+                        if(splitted[i].range(of: "title=\"") != nil){
                             start = true
                         }
                         if(start){
                             tempTitle += " " + splitted[i]
                         }
                     }
-                    let title = tempTitle.stringByReplacingOccurrencesOfString(" title=\"", withString: "").stringByReplacingOccurrencesOfString("\">\n<img", withString: "")
-                    let img = splitted[i+1].stringByReplacingOccurrencesOfString("src=\"", withString: "").stringByReplacingOccurrencesOfString("\"", withString: "")
+                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
+                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
                     let video = Video(link: link, imageLink: img, title: title)
                     self.videos.append(video)
                 }
+                i+=1
             }
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 var i = 1;
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
                 i += 3
                 
-                self.sortButton(i,text: "views:")
-                i++
-                self.sortButton(i,text: "rating:")
-                i++
-                self.sortButton(i,text: "duration:")
-                i++
-                self.sortButton(i,text: "date:")
+                self.sortButton(i,text: #selector(ViewController.views(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.rating(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.duration(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.date(_:)))
                 i += 2
                 for video in self.videos{
                     self.chargeImageAsync(video.ImageLink,index :i, video: video)
-                    i++;
+                    i += 1;
                 }
                 
                 self.nextButton(i)
-                i++;
+                i += 1;
                 if(self.actualPage > 1){
                     self.previousButton(i)
-                    i++
+                    i += 1
                 }
                 self.homeButton(i)
-                i++
+                i += 1
                 self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
-                self.scroll.scrollEnabled = true
+                self.scroll.isScrollEnabled = true
             }
-        }
+        }) 
         task.resume()
     }
     
  
     
-    func SortBySearch(howSort: String,textToSearch: String){
+    func SortBySearch(_ howSort: String,textToSearch: String){
         videos = [Video]()
          self.isSearch = true
         let subViews = self.scroll.subviews
         for subview in subViews{
             subview.removeFromSuperview()
         }
-        let url = NSURL(string: "http://www.youporn.com/search/\(howSort)/?query=\(textToSearch.stringByReplacingOccurrencesOfString(" ", withString: "+"))&page=\(actualPage)")
+        let url = URL(string: "http://www.youporn.com/search/\(howSort)/?query=\(textToSearch.replacingOccurrences(of: " ", with: "+"))&page=\(actualPage)")
         
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
+            let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
             let splitted = strin.characters.split{$0 == " "}.map(String.init)
             
-            for (var i = 0; i < splitted.count; i++)
+            var i = 0
+            while i < splitted.count
             {
                 let oo = splitted[i]
-                if (oo.rangeOfString("href=\"/watch/") != nil && splitted[i + 1].rangeOfString("class='video-box-image'") != nil){
-                    let link = oo.stringByReplacingOccurrencesOfString("href=\"",withString: "http://www.youporn.com").stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("\">", withString: "")
+                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
+                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
                     var tempTitle = ""
                     var start = false
-                    i++
-                    while((splitted[i].rangeOfString("\n")) == nil)
+                    i += 1
+                    while((splitted[i].range(of: "\n")) == nil)
                     {
-                        i++
-                        if(splitted[i].rangeOfString("title=\"") != nil){
+                        i += 1
+                        if(splitted[i].range(of: "title=\"") != nil){
                             start = true
                         }
                         if(start){
                             tempTitle += " " + splitted[i]
                         }
                     }
-                    let title = tempTitle.stringByReplacingOccurrencesOfString(" title=\"", withString: "").stringByReplacingOccurrencesOfString("\">\n<img", withString: "")
-                    let img = splitted[i+1].stringByReplacingOccurrencesOfString("src=\"", withString: "").stringByReplacingOccurrencesOfString("\"", withString: "")
+                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
+                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
                     let video = Video(link: link, imageLink: img, title: title)
                     self.videos.append(video)
                 }
+                i+=1
             }
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 var i = 1;
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
                 i += 3
-                self.sortButton(i,text: "relevance:")
-                i++
-                self.sortButton(i,text: "views:")
-                i++
-                self.sortButton(i,text: "rating:")
-                i++
-                self.sortButton(i,text: "duration:")
-                i++
-                self.sortButton(i,text: "date:")
-                i++
+                self.sortButton(i,text: #selector(ViewController.relevance(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.views(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.rating(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.duration(_:)))
+                i += 1
+                self.sortButton(i,text: #selector(ViewController.date(_:)))
+                i += 1
                 for video in self.videos{
                     self.chargeImageAsync(video.ImageLink,index :i, video: video)
-                    i++;
+                    i += 1;
                 }
                 
                 self.nextButton(i)
-                i++;
+                i += 1;
                 if(self.actualPage > 1){
                     self.previousButton(i)
-                    i++
+                    i += 1
                 }
                 self.homeButton(i)
-                i++
+                i += 1
                 self.scroll.contentSize = CGSize(width: self.bounds.width, height: CGFloat(self.calculatePosition(i).maxY + 180))
-                self.scroll.scrollEnabled = true
+                self.scroll.isScrollEnabled = true
             }
-        }
+        }) 
         task.resume()
     }
 
     
     
     
-    func TextField(index: Int)
+    func TextField(_ index: Int)
     {
         field.frame =  calculatePositionLarger(index)
-        field.backgroundColor = UIColor.whiteColor()
+        field.backgroundColor = UIColor.white
         scroll.addSubview(field)
         
     }
     
-    func searchButton(index: Int){
-        let button = UIButton(type: UIButtonType.System)
-        button.backgroundColor = UIColor.blackColor()
+    func searchButton(_ index: Int){
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor.black
         button.frame =  calculatePosition(index)
-        button.setTitle("Search", forState: .Normal)
+        button.setTitle("Search", for: UIControlState())
         //        button.tag = index + 1)
-        button.addTarget(self, action: "search:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: #selector(ViewController.search(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
     }
     
     
-    func homeButton(index: Int){
-        let button = UIButton(type: UIButtonType.System)
-        button.backgroundColor = UIColor.blackColor()
+    func homeButton(_ index: Int){
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor.black
         button.frame =  calculatePosition(index)
-        button.setTitle("Home", forState: .Normal)
+        button.setTitle("Home", for: UIControlState())
         //        button.tag = index + 1)
-        button.addTarget(self, action: "home:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: #selector(ViewController.home(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
     }
     
     
-    func sortButton(index: Int,text: Selector){
-        let button = UIButton(type: UIButtonType.System)
-        let title = text.description.stringByReplacingOccurrencesOfString(":", withString: "")
+    func sortButton(_ index: Int,text: Selector){
+        let button = UIButton(type: UIButtonType.system)
+        let title = text.description.replacingOccurrences(of: ":", with: "")
         if(selectedSort == title)
         {
-            button.backgroundColor = UIColor.grayColor()
+            button.backgroundColor = UIColor.gray
         }else{
-        button.backgroundColor = UIColor.blackColor()
+        button.backgroundColor = UIColor.black
         }
         button.frame =  calculatePosition(index)
-        button.setTitle(title,forState: .Normal)
+        button.setTitle(title,for: UIControlState())
             //        button.tag = index + 1)
-        button.addTarget(self, action: text, forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: text, for: .primaryActionTriggered)
         
         button.clipsToBounds = true
         scroll.addSubview(button)
     }
     
-    func views(sender: UIButton){
+    func views(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "views"
         if(!isSearch)
@@ -413,7 +421,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func rating(sender: UIButton){
+    func rating(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "rating"
         if(!isSearch)
@@ -424,7 +432,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func duration(sender: UIButton){
+    func duration(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "duration"
         if(!isSearch)
@@ -435,7 +443,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func date(sender: UIButton){
+    func date(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "date"
         if(!isSearch)
@@ -446,20 +454,20 @@ class ViewController: UIViewController {
         }
     }
     
-    func relevance(sender: UIButton){
+    func relevance(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "relevance"
         self.SortBySearch("relevance", textToSearch: field.text!)
     }
     
     
-    func nextButton(index: Int){
-        let button = UIButton(type: UIButtonType.System)
-        button.backgroundColor = UIColor.blackColor()
+    func nextButton(_ index: Int){
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor.black
         button.frame =  calculatePosition(index)
-        button.setTitle("Next Page", forState: .Normal)
+        button.setTitle("Next Page", for: UIControlState())
         button.tag = index
-        button.addTarget(self, action: "next:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: #selector(ViewController.next(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
         
@@ -468,24 +476,24 @@ class ViewController: UIViewController {
     }
     
     
-    func previousButton(index: Int){
-        let button = UIButton(type: UIButtonType.System)
+    func previousButton(_ index: Int){
+        let button = UIButton(type: UIButtonType.system)
         button.frame =  calculatePosition(index)
-        button.setTitle("Previous Page", forState: .Normal)
+        button.setTitle("Previous Page", for: UIControlState())
         button.tag = index
-        button.addTarget(self, action: "previous:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: #selector(ViewController.previous(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
         //        scroll.clipsToBounds = true
     }
     
-    func tapped(sender: UIButton) {
+    func tapped(_ sender: UIButton) {
         let object = self.videos[sender.tag]
-        self.performSegueWithIdentifier("Video", sender: object)
+        self.performSegue(withIdentifier: "Video", sender: object)
     }
     
-    func next(sender: UIButton) {
-        actualPage++
+    func next(_ sender: UIButton) {
+        actualPage += 1
         //TODO ADD SORT PAGINATION
         if(!isSearch){
             if(!isSorted)
@@ -506,8 +514,8 @@ class ViewController: UIViewController {
     }
     
     
-    func previous(sender: UIButton) {
-        actualPage--
+    func previous(_ sender: UIButton) {
+        actualPage -= 1
         if(!isSearch){
             if(!isSorted)
             {
@@ -526,22 +534,22 @@ class ViewController: UIViewController {
         }
     }
     
-    func home(sender: UIButton){
+    func home(_ sender: UIButton){
         self.actualPage = 1
         self.showPage(actualPage)
     }
     
     
-    func search(sender: UIButton){
+    func search(_ sender: UIButton){
         self.actualPage = 1
         self.searchText(field.text!)
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         let video = sender as! Video
         if segue.identifier == "Video"{
-            let vc = segue.destinationViewController as! VideoController
+            let vc = segue.destination as! VideoController
             vc.video = video
         }
     }
@@ -553,68 +561,68 @@ class ViewController: UIViewController {
     }
     
     
-    func calculatePosition(index: Int) -> CGRect
+    func calculatePosition(_ index: Int) -> CGRect
     {
         let numImagePerRow = Int(bounds.width) / (Int(300) + 20)
         let width = CGFloat(300)
         let height =  CGFloat(169)
         let x = ((index) % numImagePerRow) * Int(width) + 20 * ((index) % numImagePerRow + 1)
         let y = (index) / numImagePerRow * Int(height) + 20 * ((index) / numImagePerRow + 1)
-        return CGRectMake(CGFloat(x), CGFloat(y), width, height)
+        return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
     }
     
-    func calculatePositionLarger(index: Int) -> CGRect
+    func calculatePositionLarger(_ index: Int) -> CGRect
     {
         let numImagePerRow = Int(bounds.width) / (Int(300) + 20)
         let width = CGFloat(600)
         let height =  CGFloat(169)
         let x = ((index) % numImagePerRow) * Int(width) + 20 * ((index) % numImagePerRow + 1)
         let y = (index) / numImagePerRow * Int(height) + 20 * ((index) / numImagePerRow + 1)
-        return CGRectMake(CGFloat(x), CGFloat(y), width, height)
+        return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
     }
     
-    func calculatePosition(index: Int, image: UIImage) -> CGRect
+    func calculatePosition(_ index: Int, image: UIImage) -> CGRect
     {
         let numImagePerRow = Int(bounds.width) / (Int(image.size.width) + 20)
         let width = image.size.width
         let height = image.size.height
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow + 1)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow + 1)
-        return CGRectMake(CGFloat(x), CGFloat(y), width, height)
+        return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
     }
     
-    func createButton(image: UIImage, index: Int,video: Video){
-        let button = UIButton(type: UIButtonType.System)
-        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
-        button.titleLabel?.lineBreakMode = .ByTruncatingTail
-        button.titleLabel?.backgroundColor = UIColor.blackColor()
-        button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), forState: .Normal)
+    func createButton(_ image: UIImage, index: Int,video: Video){
+        let button = UIButton(type: UIButtonType.system)
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.bottom
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.backgroundColor = UIColor.black
+        button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), for: UIControlState())
         button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
-        button.setTitle(String(htmlEncodedString: video.Title), forState: .Normal)
-        button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        button.setTitle(String(htmlEncodedString: video.Title), for: UIControlState())
+        button.imageView?.contentMode = UIViewContentMode.scaleAspectFit
         button.frame =  calculatePosition(index, image: image)
-        button.setBackgroundImage(image, forState: .Normal)
+        button.setBackgroundImage(image, for: UIControlState())
         button.tag = index - 12
-        button.addTarget(self, action: "tapped:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: #selector(ViewController.tapped(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
         scroll.clipsToBounds = true
     }
     
-    func chargeImageAsync(image: String, index: Int, video: Video){
-        let url = NSURL(string: image)
+    func chargeImageAsync(_ image: String, index: Int, video: Video){
+        let url = URL(string: image)
         if((url == nil || (url?.hashValue) == nil)){
             let image = UIImage(named: "ImageNotfound.png")
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 self.createButton(image!,index: index,video: video)
             }
         }else{
-            let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+            let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
                 let image = UIImage(data: data!)
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     self.createButton(image!,index: index,video: video)
                     }
-            }
+            }) 
             task.resume()
         }
     }

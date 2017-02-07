@@ -372,10 +372,8 @@ class ViewController: NSViewController {
     extension String {
         init(htmlEncodedString: String) {
             let encodedData = htmlEncodedString.dataUsingEncoding(NSUTF8StringEncoding)!
-            let attributedOptions : [String: AnyObject] = [
-                NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
-            ]
+            let attributedOptions: [ String: AnyObject ] = [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject, NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue) as AnyObject ]
+
             var attributedString = NSAttributedString()
             do{
                 attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
