@@ -599,6 +599,7 @@ class ViewController: UIViewController {
         button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), for: UIControlState())
         button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
         button.setTitle(String(htmlEncodedString: video.Title), for: UIControlState())
+        button.titleLabel?.text = video.Title
         button.imageView?.contentMode = UIViewContentMode.scaleAspectFit
         button.frame =  calculatePosition(index, image: image)
         button.setBackgroundImage(image, for: UIControlState())

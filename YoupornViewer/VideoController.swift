@@ -46,8 +46,8 @@ class VideoController: UIViewController {
                     while((splitted[i].range(of: "/a>")) == nil)
                     {
                         i += 1
-                        if(splitted[i].range(of: "href=") != nil){
-                           tempLink = splitted[i]
+                        if(splitted[i].range(of: "|||") != nil){
+                            tempLink = splitted[i].components(separatedBy: "|||")[1]
                         }
                         
                         if(splitted[i].range(of: "\'>") != nil && tempLink.characters.count > 2){
@@ -60,7 +60,7 @@ class VideoController: UIViewController {
                      
                     }
                     let link = tempLink.replacingOccurrences(of: "href='", with: "")
-                    let title = tempTitle.replacingOccurrences(of: " Video'>", with: "").replacingOccurrences(of: "</a>\n<span", with: "")
+                    let title = tempTitle.components(separatedBy: "\n")[1]
                     self.downloadLinks.append(DownloadLink(link: link, title: title))
                 }
                 i += 1
@@ -109,6 +109,7 @@ class VideoController: UIViewController {
         let button = UIButton(type: UIButtonType.system)
         button.frame =  CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
         button.setTitle(download.Title, for: UIControlState())
+        button.titleLabel?.text = download.Title
         button.tag = index
         button.addTarget(self, action: #selector(VideoController.tapped(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
