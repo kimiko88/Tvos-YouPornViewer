@@ -42,6 +42,20 @@ class ViewController: UIViewController {
         
     }
     
+    func matches(for regex: String, in text: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            return results.map {
+                String(text[Range($0.range, in: text)!])
+            }
+        } catch let error {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
     
     
     func showPage(_ actualPage: Int){
@@ -56,34 +70,17 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let splitted = strin.characters.split{$0 == " "}.map(String.init)
-            
-            var i = 0
-            while i < splitted.count
-            {
-                let oo = splitted[i]
-                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
-                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
-                    var tempTitle = ""
-                    var start = false
-                    i += 1
-                    while((splitted[i].range(of: "\n")) == nil)
-                    {
-                        i += 1
-                        if(splitted[i].range(of: "title=\"") != nil){
-                            start = true
-                        }
-                        if(start){
-                            tempTitle += " " + splitted[i]
-                        }
-                    }
-                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
-                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
-                        print(img)
-                    let video = Video(link: link, imageLink: img, title: title)
+            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
+            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            if(titlestemp.count == regexes.count){
+                
+                for (index,_) in regexes.enumerated(){
+                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
-                i += 1
             }
             DispatchQueue.main.async{
                 var i = 1;
@@ -91,17 +88,17 @@ class ViewController: UIViewController {
                 i += 3
                 self.searchButton(i)
                 i += 3
-//                
-//                self.sortButton(i,text: "relevance:")
-//                i++
+                //
+                //                self.sortButton(i,text: "relevance:")
+                //                i++
                 self.sortButton(i,text: #selector(ViewController.views(_:)))
-                 i += 1
+                i += 1
                 self.sortButton(i,text: #selector(ViewController.rating(_:)))
-                 i += 1
+                i += 1
                 self.sortButton(i,text: #selector(ViewController.duration(_:)))
-                 i += 1
+                i += 1
                 self.sortButton(i,text: #selector(ViewController.date(_:)))
-                 i += 2
+                i += 2
                 for video in self.videos{
                     self.chargeImageAsync(video.ImageLink,index :i, video: video)
                     i += 1;
@@ -138,41 +135,25 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let splitted = strin.characters.split{$0 == " "}.map(String.init)
-            
-            var i = 0
-            while i < splitted.count
-            {
-                let oo = splitted[i]
-                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
-                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
-                    var tempTitle = ""
-                    var start = false
-                    i += 1
-                    while((splitted[i].range(of: "\n")) == nil)
-                    {
-                        i += 1
-                        if(splitted[i].range(of: "title=\"") != nil){
-                            start = true
-                        }
-                        if(start){
-                            tempTitle += " " + splitted[i]
-                        }
-                    }
-                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
-                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
-                    let video = Video(link: link, imageLink: img, title: title)
+            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
+            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+//            if(titlestemp.count == regexes.count){
+//
+                for (index,_) in regexes.enumerated(){
+                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
-                i+=1
-            }
+//            }
             DispatchQueue.main.async{
                 var i = 1;
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
                 i += 3
-
+                
                 self.sortButton(i,text: #selector(ViewController.relevance(_:)))
                 i += 1
                 self.sortButton(i,text: #selector(ViewController.views(_:)))
@@ -216,33 +197,17 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let splitted = strin.characters.split{$0 == " "}.map(String.init)
-            
-            var i = 0
-            while i < splitted.count
-            {
-                let oo = splitted[i]
-                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
-                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
-                    var tempTitle = ""
-                    var start = false
-                    i += 1
-                    while((splitted[i].range(of: "\n")) == nil)
-                    {
-                        i += 1
-                        if(splitted[i].range(of: "title=\"") != nil){
-                            start = true
-                        }
-                        if(start){
-                            tempTitle += " " + splitted[i]
-                        }
-                    }
-                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
-                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
-                    let video = Video(link: link, imageLink: img, title: title)
+            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
+            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            if(titlestemp.count == regexes.count){
+                
+                for (index,_) in regexes.enumerated(){
+                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
-                i+=1
             }
             DispatchQueue.main.async{
                 var i = 1;
@@ -279,11 +244,11 @@ class ViewController: UIViewController {
         task.resume()
     }
     
- 
+    
     
     func SortBySearch(_ howSort: String,textToSearch: String){
         videos = [Video]()
-         self.isSearch = true
+        self.isSearch = true
         let subViews = self.scroll.subviews
         for subview in subViews{
             subview.removeFromSuperview()
@@ -293,33 +258,17 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let splitted = strin.characters.split{$0 == " "}.map(String.init)
-            
-            var i = 0
-            while i < splitted.count
-            {
-                let oo = splitted[i]
-                if (oo.range(of: "href=\"/watch/") != nil && splitted[i + 1].range(of: "class='video-box-image'") != nil){
-                    let link = oo.replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\">", with: "")
-                    var tempTitle = ""
-                    var start = false
-                    i += 1
-                    while((splitted[i].range(of: "\n")) == nil)
-                    {
-                        i += 1
-                        if(splitted[i].range(of: "title=\"") != nil){
-                            start = true
-                        }
-                        if(start){
-                            tempTitle += " " + splitted[i]
-                        }
-                    }
-                    let title = tempTitle.replacingOccurrences(of: " title=\"", with: "").replacingOccurrences(of: "\">\n<img", with: "")
-                    let img = splitted[i+1].replacingOccurrences(of: "src=\"", with: "").replacingOccurrences(of: "\"", with: "")
-                    let video = Video(link: link, imageLink: img, title: title)
+            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
+            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            if(titlestemp.count == regexes.count){
+                
+                for (index,_) in regexes.enumerated(){
+                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
-                i+=1
             }
             DispatchQueue.main.async{
                 var i = 1;
@@ -356,7 +305,7 @@ class ViewController: UIViewController {
         }) 
         task.resume()
     }
-
+    
     
     
     
@@ -399,29 +348,29 @@ class ViewController: UIViewController {
         {
             button.backgroundColor = UIColor.gray
         }else{
-        button.backgroundColor = UIColor.black
+            button.backgroundColor = UIColor.black
         }
         button.frame =  calculatePosition(index)
         button.setTitle(title,for: UIControlState())
-            //        button.tag = index + 1)
+        //        button.tag = index + 1)
         button.addTarget(self, action: text, for: .primaryActionTriggered)
         
         button.clipsToBounds = true
         scroll.addSubview(button)
     }
     
-    func views(_ sender: UIButton){
+    @objc func views(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "views"
         if(!isSearch)
         {
-        self.SortByHome("views")
+            self.SortByHome("views")
         }else{
-          self.SortBySearch("views", textToSearch: field.text!)
+            self.SortBySearch("views", textToSearch: field.text!)
         }
     }
     
-    func rating(_ sender: UIButton){
+    @objc func rating(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "rating"
         if(!isSearch)
@@ -432,7 +381,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func duration(_ sender: UIButton){
+    @objc func duration(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "duration"
         if(!isSearch)
@@ -443,7 +392,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func date(_ sender: UIButton){
+    @objc func date(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "date"
         if(!isSearch)
@@ -454,7 +403,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func relevance(_ sender: UIButton){
+    @objc func relevance(_ sender: UIButton){
         self.actualPage = 1
         selectedSort = "relevance"
         self.SortBySearch("relevance", textToSearch: field.text!)
@@ -487,18 +436,18 @@ class ViewController: UIViewController {
         //        scroll.clipsToBounds = true
     }
     
-    func tapped(_ sender: UIButton) {
+    @objc func tapped(_ sender: UIButton) {
         let object = self.videos[sender.tag]
         self.performSegue(withIdentifier: "Video", sender: object)
     }
     
-    func next(_ sender: UIButton) {
+    @objc func next(_ sender: UIButton) {
         actualPage += 1
         //TODO ADD SORT PAGINATION
         if(!isSearch){
             if(!isSorted)
             {
-            self.showPage(actualPage)
+                self.showPage(actualPage)
             }else
             {
                 self.SortByHome(selectedSort)
@@ -506,7 +455,7 @@ class ViewController: UIViewController {
         }
         else{
             if(!isSorted){
-            self.searchText(field.text!)
+                self.searchText(field.text!)
             }else{
                 self.SortBySearch(selectedSort, textToSearch: field.text!)
             }
@@ -514,7 +463,7 @@ class ViewController: UIViewController {
     }
     
     
-    func previous(_ sender: UIButton) {
+    @objc func previous(_ sender: UIButton) {
         actualPage -= 1
         if(!isSearch){
             if(!isSorted)
@@ -534,13 +483,13 @@ class ViewController: UIViewController {
         }
     }
     
-    func home(_ sender: UIButton){
+    @objc func home(_ sender: UIButton){
         self.actualPage = 1
         self.showPage(actualPage)
     }
     
     
-    func search(_ sender: UIButton){
+    @objc func search(_ sender: UIButton){
         self.actualPage = 1
         self.searchText(field.text!)
     }
@@ -622,7 +571,7 @@ class ViewController: UIViewController {
                 let image = UIImage(data: data!)
                 DispatchQueue.main.async{
                     self.createButton(image!,index: index,video: video)
-                    }
+                }
             }) 
             task.resume()
         }
