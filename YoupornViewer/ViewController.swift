@@ -87,7 +87,7 @@ class ViewController: UIViewController {
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
-                i += 3
+                i += 2
                 //
                 //                self.sortButton(i,text: "relevance:")
                 //                i++
@@ -152,7 +152,7 @@ class ViewController: UIViewController {
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
-                i += 3
+                i += 2
                 
                 self.sortButton(i,text: #selector(ViewController.relevance(_:)))
                 i += 1
@@ -214,7 +214,7 @@ class ViewController: UIViewController {
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
-                i += 3
+                i += 2
                 
                 self.sortButton(i,text: #selector(ViewController.views(_:)))
                 i += 1
@@ -275,7 +275,7 @@ class ViewController: UIViewController {
                 self.TextField(i)
                 i += 3
                 self.searchButton(i)
-                i += 3
+                i += 2
                 self.sortButton(i,text: #selector(ViewController.relevance(_:)))
                 i += 1
                 self.sortButton(i,text: #selector(ViewController.views(_:)))
@@ -419,6 +419,14 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(ViewController.next(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
+//        let button = UIButton(type: UIButtonType.system)
+//        button.backgroundColor = UIColor.black
+//        button.frame =  calculatePosition(index)
+//        button.setTitle("Next Page", for: UIControlState())
+//        button.tag = index
+//        button.addTarget(self, action: #selector(ViewController.next(_:)), for: .primaryActionTriggered)
+//        button.clipsToBounds = true
+//        scroll.addSubview(button)
         
         //        scroll.contentSize = CGSize(width: bounds.width, height: CGFloat(y + 180))
         //        scroll.scrollEnabled = true
@@ -427,6 +435,7 @@ class ViewController: UIViewController {
     
     func previousButton(_ index: Int){
         let button = UIButton(type: UIButtonType.system)
+        print(calculatePosition(index))
         button.frame =  calculatePosition(index)
         button.setTitle("Previous Page", for: UIControlState())
         button.tag = index
@@ -512,9 +521,9 @@ class ViewController: UIViewController {
     
     func calculatePosition(_ index: Int) -> CGRect
     {
-        let numImagePerRow = Int(bounds.width) / (Int(300) + 20)
-        let width = CGFloat(300)
-        let height =  CGFloat(169)
+        let numImagePerRow = Int(bounds.width) / (Int(316) + 20)
+        let width = CGFloat(316)
+        let height =  CGFloat(178)
         let x = ((index) % numImagePerRow) * Int(width) + 20 * ((index) % numImagePerRow + 1)
         let y = (index) / numImagePerRow * Int(height) + 20 * ((index) / numImagePerRow + 1)
         return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
@@ -522,9 +531,9 @@ class ViewController: UIViewController {
     
     func calculatePositionLarger(_ index: Int) -> CGRect
     {
-        let numImagePerRow = Int(bounds.width) / (Int(300) + 20)
-        let width = CGFloat(600)
-        let height =  CGFloat(169)
+        let numImagePerRow = Int(bounds.width) / (Int(316) + 20)
+        let width = CGFloat(632)
+        let height =  CGFloat(178)
         let x = ((index) % numImagePerRow) * Int(width) + 20 * ((index) % numImagePerRow + 1)
         let y = (index) / numImagePerRow * Int(height) + 20 * ((index) / numImagePerRow + 1)
         return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
@@ -535,6 +544,8 @@ class ViewController: UIViewController {
         let numImagePerRow = Int(bounds.width) / (Int(image.size.width) + 20)
         let width = image.size.width
         let height = image.size.height
+        print(height)
+        print(width)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow + 1)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow + 1)
         return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
@@ -552,7 +563,7 @@ class ViewController: UIViewController {
         button.imageView?.contentMode = UIViewContentMode.scaleAspectFit
         button.frame =  calculatePosition(index, image: image)
         button.setBackgroundImage(image, for: UIControlState())
-        button.tag = index - 12
+        button.tag = index - 11
         button.addTarget(self, action: #selector(ViewController.tapped(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
         scroll.addSubview(button)
