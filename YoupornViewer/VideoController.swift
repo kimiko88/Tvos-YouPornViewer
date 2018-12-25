@@ -46,11 +46,11 @@ class VideoController: UIViewController {
                     while((splitted[i].range(of: "/a>")) == nil)
                     {
                         i += 1
-                        if(splitted[i].range(of: "|||") != nil){
-                            tempLink = splitted[i].components(separatedBy: "|||")[1]
+                        if(splitted[i].range(of: "href=\"") != nil){
+                            tempLink = splitted[i].components(separatedBy: "href=\"")[1]
                         }
                         
-                        if(splitted[i].range(of: "\'>") != nil && tempLink.count > 2){
+                        if(splitted[i].range(of: "\">") != nil && tempLink.count > 2){
                             start = true
                         }
                         if(start)
@@ -59,8 +59,8 @@ class VideoController: UIViewController {
                         }
                         
                     }
-                    let link = tempLink.replacingOccurrences(of: "href='", with: "")
-                    let title = tempTitle.components(separatedBy: "\n")[1]
+                    let link = tempLink.replacingOccurrences(of: "\"", with: "")
+                    let title = tempTitle.components(separatedBy: "\n")[3]
                     self.downloadLinks.append(DownloadLink(link: link, title: title))
                 }
                 i += 1

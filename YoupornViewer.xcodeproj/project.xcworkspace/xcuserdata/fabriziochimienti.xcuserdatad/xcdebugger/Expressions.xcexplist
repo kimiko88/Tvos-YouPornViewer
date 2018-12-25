@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #1 in VideoController.viewDidLoad():VideoController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempLink.replacingOccurrences(of: &quot;href=&apos;&quot;, with: &quot;&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
