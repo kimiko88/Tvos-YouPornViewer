@@ -33,6 +33,9 @@
 		D69BCD8B1BC1B8C600B4B98C /* YoupornViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD8A1BC1B8C600B4B98C /* YoupornViewerTests.swift */; };
 		D69BCD961BC1B8C600B4B98C /* YoupornViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCD951BC1B8C600B4B98C /* YoupornViewerUITests.swift */; };
 		D69BCDA41BC1D01A00B4B98C /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BCDA31BC1D01A00B4B98C /* VideoController.swift */; };
+		D6A829E12566EAA400FC8D72 /* DownloadLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A829E02566EAA400FC8D72 /* DownloadLink.swift */; };
+		D6A829F12566EB0000FC8D72 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A829F02566EB0000FC8D72 /* Video.swift */; };
+		D6A82A0125670A3A00FC8D72 /* RegexCostants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A82A0025670A3A00FC8D72 /* RegexCostants.swift */; };
 		D6AF5E041BF112FE00581B55 /* ImageNotfound.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AF5E031BF112FE00581B55 /* ImageNotfound.png */; };
 		D6AF5E061BF11B5000581B55 /* ImageNotfound1.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AF5E051BF11B5000581B55 /* ImageNotfound1.png */; };
 /* End PBXBuildFile section */
@@ -109,6 +112,9 @@
 		D69BCD951BC1B8C600B4B98C /* YoupornViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoupornViewerUITests.swift; sourceTree = "<group>"; };
 		D69BCD971BC1B8C600B4B98C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D69BCDA31BC1D01A00B4B98C /* VideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
+		D6A829E02566EAA400FC8D72 /* DownloadLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadLink.swift; sourceTree = "<group>"; };
+		D6A829F02566EB0000FC8D72 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		D6A82A0025670A3A00FC8D72 /* RegexCostants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexCostants.swift; sourceTree = "<group>"; };
 		D6AF5E031BF112FE00581B55 /* ImageNotfound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageNotfound.png; sourceTree = "<group>"; };
 		D6AF5E051BF11B5000581B55 /* ImageNotfound1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageNotfound1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -247,6 +253,7 @@
 		D69BCD741BC1B8C500B4B98C /* YoupornViewer */ = {
 			isa = PBXGroup;
 			children = (
+				D6A829DF2566EA8100FC8D72 /* Models */,
 				D6AF5E031BF112FE00581B55 /* ImageNotfound.png */,
 				D69BCD751BC1B8C500B4B98C /* AppDelegate.swift */,
 				D69BCD771BC1B8C500B4B98C /* ViewController.swift */,
@@ -276,6 +283,16 @@
 				D69BCD971BC1B8C600B4B98C /* Info.plist */,
 			);
 			path = YoupornViewerUITests;
+			sourceTree = "<group>";
+		};
+		D6A829DF2566EA8100FC8D72 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D6A829E02566EAA400FC8D72 /* DownloadLink.swift */,
+				D6A829F02566EB0000FC8D72 /* Video.swift */,
+				D6A82A0025670A3A00FC8D72 /* RegexCostants.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -411,7 +428,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "fabrizio chimienti";
 				TargetAttributes = {
 					D623736E1BC9148A0034EAF6 = {
@@ -430,23 +447,23 @@
 					};
 					D69BCD711BC1B8C500B4B98C = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 					};
 					D69BCD851BC1B8C600B4B98C = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 						TestTargetID = D69BCD711BC1B8C500B4B98C;
 					};
 					D69BCD901BC1B8C600B4B98C = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 						TestTargetID = D69BCD711BC1B8C500B4B98C;
 					};
 				};
 			};
 			buildConfigurationList = D69BCD6D1BC1B8C500B4B98C /* Build configuration list for PBXProject "YoupornViewer" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -574,10 +591,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6A82A0125670A3A00FC8D72 /* RegexCostants.swift in Sources */,
 				D618A5DB1BC5AE0100097647 /* SeeVideo.swift in Sources */,
 				D69BCD7B1BC1B8C500B4B98C /* YoupornViewer.xcdatamodeld in Sources */,
 				D69BCD781BC1B8C500B4B98C /* ViewController.swift in Sources */,
+				D6A829E12566EAA400FC8D72 /* DownloadLink.swift in Sources */,
 				D69BCD761BC1B8C500B4B98C /* AppDelegate.swift in Sources */,
+				D6A829F12566EB0000FC8D72 /* Video.swift in Sources */,
 				D69BCDA41BC1D01A00B4B98C /* VideoController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -665,8 +685,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornVieweriOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -684,8 +705,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornVieweriOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -702,8 +724,9 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornVieweriOSTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -721,8 +744,9 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornVieweriOSTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -739,8 +763,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornVieweriOSUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -758,8 +783,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornVieweriOSUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -813,6 +839,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -831,6 +858,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -854,12 +882,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = appletvos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -867,6 +898,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -885,6 +917,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -902,12 +935,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = appletvos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -928,8 +964,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -949,8 +986,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -958,6 +996,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornViewerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -966,8 +1005,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YoupornViewer.app/YoupornViewer";
 			};
 			name = Debug;
@@ -976,6 +1014,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornViewerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -984,8 +1023,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YoupornViewer.app/YoupornViewer";
 			};
 			name = Release;
@@ -993,6 +1031,7 @@
 		D69BCDA11BC1B8C600B4B98C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornViewerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1001,8 +1040,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = YoupornViewer;
 				USES_XCTRUNNER = YES;
 			};
@@ -1011,6 +1049,7 @@
 		D69BCDA21BC1B8C600B4B98C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = LLNSXF9WW4;
 				INFOPLIST_FILE = YoupornViewerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1019,8 +1058,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fabriziochimienti.YoupornViewerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = YoupornViewer;
 				USES_XCTRUNNER = YES;
 			};

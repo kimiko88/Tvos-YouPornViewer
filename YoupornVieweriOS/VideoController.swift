@@ -20,7 +20,7 @@ class DownloadLink{
 
 class VideoController: UIViewController {
     
-    var bounds = UIScreen.mainScreen().bounds
+    var bounds = UIScreen.main.bounds
     var video: Video!
     
     var downloadLinks = [DownloadLink]()
@@ -29,27 +29,27 @@ class VideoController: UIViewController {
         super.viewDidLoad()
         
         let url = NSURL(string: self.video.Link)
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            let stringa = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let task = URLSession.shared.dataTask(with: url! as URL) {(data, response, error) in
+            let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let splitted = strin.characters.split{$0 == " "}.map(String.init)
-            for (var i = 0; i < splitted.count; i++)
+            let splitted = strin.split{$0 == " "}.map(String.init)
+            for var i in 0..<splitted.count
             {
                 let oo = splitted[i]
                 
-                if (oo.rangeOfString("downloadOption") != nil){
+                if (oo.contains("downloadOption")){
                     var tempLink = ""
                     var tempTitle = ""
                     var start = false
-                    i++
-                    while((splitted[i].rangeOfString("/a>")) == nil)
+                    i+=1
+                    while(!splitted[i].contains("/a>"))
                     {
-                        i++
-                        if(splitted[i].rangeOfString("href=") != nil){
+                        i+=1
+                        if(splitted[i].contains("href=")){
                             tempLink = splitted[i]
                         }
                         
-                        if(splitted[i].rangeOfString("\'>") != nil && tempLink.characters.count > 2){
+                        if(splitted[i].contains("\'>") && tempLink.count > 2){
                             start = true
                         }
                         if(start)
@@ -58,52 +58,52 @@ class VideoController: UIViewController {
                         }
                         
                     }
-                    let link = tempLink.stringByReplacingOccurrencesOfString("href='", withString: "")
-                    let title = tempTitle.stringByReplacingOccurrencesOfString(" Video'>", withString: "").stringByReplacingOccurrencesOfString("</a>\n<span", withString: "")
+                    let link = tempLink.replacingOccurrences(of: "href='", with: "")
+                    let title = tempTitle.replacingOccurrences(of:" Video'>", with: "").replacingOccurrences(of: "</a>\n<span", with: "")
                     self.downloadLinks.append(DownloadLink(link: link, title: title))
                 }
             }
             
             
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async(execute: {
                 var i = 0
                 
                 for downloadLink in self.downloadLinks{
-                   if(downloadLink.Title.rangeOfString("3GP") == nil)//AVPlayer for tvos can't play 3GP file
+                   if(!downloadLink.Title.contains("3GP"))//AVPlayer for tvos can't play 3GP file
                    {
-                        self.createButton(downloadLink,index: i)
-                         i++;
+                    self.createButton(download: downloadLink,index: i)
+                         i+=1
                     }
                
                 }
-                self.createHomeButton(i)
-            }
+                self.createHomeButton(index: i)
+            })
         }
         task.resume()
-                self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
     }
     
     
     func tapped(sender: UIButton) {
         let object = self.downloadLinks[sender.tag]
         
-        self.performSegueWithIdentifier("SeeVideo", sender: object)
+        self.performSegue(withIdentifier: "SeeVideo", sender: object)
     }
     
     func home(sender: UIButton) {
         
-        self.performSegueWithIdentifier("BackHome", sender: nil)
+        self.performSegue(withIdentifier: "BackHome", sender: nil)
     }
     
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "BackHome"{
-        _ = segue.destinationViewController as! ViewController
+            _ = segue.destination as! ViewController
         }else{
         let video = sender as! DownloadLink
         if segue.identifier == "SeeVideo"{
-            let vc = segue.destinationViewController as! AVVideoPlayerController
+            let vc = segue.destination as! AVVideoPlayerController
             vc.downloadVideo = video
         }
         }
@@ -115,11 +115,11 @@ class VideoController: UIViewController {
         let height = CGFloat(50)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow)
-        let button = UIButton(type: UIButtonType.System)
-        button.frame =  CGRectMake(CGFloat(x), CGFloat(y), width, height)
-        button.setTitle(download.Title, forState: .Normal)
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.frame =  CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
+        button.setTitle(download.Title,for: UIControl.State.normal)
         button.tag = index
-        button.addTarget(self, action: "tapped:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: Selector(("tapped:")), for: .primaryActionTriggered)
         button.clipsToBounds = true
         self.view.addSubview(button)
         self.view.clipsToBounds = true
@@ -131,11 +131,11 @@ class VideoController: UIViewController {
         let height = CGFloat(50)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow)
-        let button = UIButton(type: UIButtonType.System)
-        button.frame =  CGRectMake(CGFloat(x), CGFloat(y), width, height)
-        button.setTitle("Home", forState: .Normal)
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.frame =  CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
+        button.setTitle("Home",for: UIControl.State.normal)
         button.tag = index
-        button.addTarget(self, action: "home:", forControlEvents: .PrimaryActionTriggered)
+        button.addTarget(self, action: Selector(("home:")), for: .primaryActionTriggered)
         button.clipsToBounds = true
         self.view.addSubview(button)
         self.view.clipsToBounds = true

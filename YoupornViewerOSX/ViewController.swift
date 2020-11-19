@@ -132,11 +132,11 @@ class ViewController: NSViewController {
             i++
             
         self.scroll.contentView.setFrameSize(NSSize(width: self.bounds!.width, height: CGFloat(self.calculatePosition(i).maxY + 50)))
-            print(self.scroll.hasVerticalScroller)
+            //print(self.scroll.hasVerticalScroller)
 //            var scroller = NSScroller()
 //            scroller.controlTint = NSControlTint.BlueControlTint
 //            self.scroll.horizontalScroller = scroller
-             print(self.scroll.hasHorizontalScroller)
+             //print(self.scroll.hasHorizontalScroller)
 //            self.scroll.documentView!.setFrame(NSRect(x: 0, y: 0, width: self.bounds!.width, height: CGFloat(self.calculatePosition(i).maxY + 50)), display: true)
         }
     }

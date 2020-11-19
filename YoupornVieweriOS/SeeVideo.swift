@@ -18,18 +18,18 @@ class AVVideoPlayerController: AVPlayerViewController{
         super.viewDidLoad()
         
         let url = NSURL(string:  String(htmlEncodedString: downloadVideo.Link))
-        player = AVPlayer(URL: url!)
+        player = AVPlayer(url: url! as URL)
         player?.play()
-        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "tick", userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 2, target: self, selector: Selector(("tick")), userInfo: nil, repeats: true)
     }
     
     
     func tick() {//Failed case
-        if(player!.status == .Failed)
+        if(player!.status == .failed)
         {
             let url = NSURL(string:  String(htmlEncodedString: downloadVideo.Link))
-            let item = AVPlayerItem(URL: url!)
-            player?.replaceCurrentItemWithPlayerItem(item)
+            let item = AVPlayerItem(url: url! as URL)
+            player?.replaceCurrentItem(with: item)
         }
     }
 }
@@ -37,8 +37,8 @@ class AVVideoPlayerController: AVPlayerViewController{
 
 extension String {
     init(htmlEncodedString: String) {
-        let encodedData = htmlEncodedString.dataUsingEncoding(NSUTF8StringEncoding)!
-        let attributedOptions: [ String: AnyObject ] = [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject, NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue) as AnyObject ]
+        let encodedData = htmlEncodedString.data(using: String.Encoding.utf8)!
+        let attributedOptions: [ NSAttributedString.DocumentReadingOptionKey: AnyObject ] = [ NSAttributedString.DocumentReadingOptionKey(rawValue: NSAttributedString.DocumentAttributeKey.documentType.rawValue): NSAttributedString.DocumentType.html as AnyObject, NSAttributedString.DocumentReadingOptionKey(rawValue: NSAttributedString.DocumentAttributeKey.characterEncoding.rawValue): NSNumber(value: String.Encoding.utf8.rawValue) as AnyObject ]
 
         var attributedString = NSAttributedString()
         do{

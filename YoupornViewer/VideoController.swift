@@ -9,15 +9,6 @@
 import UIKit
 
 
-class DownloadLink{
-    var Link: String
-    var Title: String
-    init(link: String, title: String){
-        Link = link
-        Title = title
-    }
-}
-
 class VideoController: UIViewController {
     
     var bounds = UIScreen.main.bounds
@@ -47,7 +38,7 @@ class VideoController: UIViewController {
                     {
                         i += 1
                         if(splitted[i].range(of: "href=\"") != nil){
-                            tempLink = splitted[i].components(separatedBy: "href=\"")[1]
+                            tempLink = splitted[i].components(separatedBy: "\"")[1]
                         }
                         
                         if(splitted[i].range(of: "\">") != nil && tempLink.count > 2){
@@ -106,9 +97,9 @@ class VideoController: UIViewController {
         let height = CGFloat(180)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow)
-        let button = UIButton(type: UIButtonType.system)
+        let button = UIButton(type: UIButton.ButtonType.system)
         button.frame =  CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
-        button.setTitle(download.Title, for: UIControlState())
+        button.setTitle(download.Title, for: UIControl.State())
         button.titleLabel?.text = download.Title
         button.tag = index
         button.addTarget(self, action: #selector(VideoController.tapped(_:)), for: .primaryActionTriggered)

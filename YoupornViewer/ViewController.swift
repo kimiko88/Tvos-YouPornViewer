@@ -10,20 +10,6 @@ import UIKit
 import Foundation
 
 
-
-class Video{
-    var Link: String
-    var ImageLink: String
-    var Title: String
-    init(link: String, imageLink: String, title: String)
-    {
-        Link = link
-        ImageLink = imageLink
-        Title = title
-    }
-}
-
-
 class ViewController: UIViewController {
     var videos = [Video]()
     var actualPage = 1;
@@ -39,14 +25,12 @@ class ViewController: UIViewController {
         self.view = self.scroll;
         self.scroll.backgroundColor = UIColor.black
         showPage(actualPage)
-        
     }
     
     func matches(for regex: String, in text: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: regex)
-            let results = regex.matches(in: text,
-                                        range: NSRange(text.startIndex..., in: text))
+            let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
             return results.map {
                 String(text[Range($0.range, in: text)!])
             }
@@ -70,14 +54,14 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
-            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            let titlestemp = self.matches(for: RegexConst.titlestempRegex ,in: strin)
+            let regexes = self.matches(for: RegexConst.regexes, in: strin)
             if(titlestemp.count == regexes.count){
                 
                 for (index,_) in regexes.enumerated(){
-                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let title = self.matches(for: RegexConst.titleRegex,in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: RegexConst.imageRegex, in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: RegexConst.videoLinkRegex, in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                     let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
@@ -135,14 +119,14 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
-            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            let titlestemp = self.matches(for: RegexConst.titlestempRegex,in: strin)
+            let regexes = self.matches(for: RegexConst.regexes, in: strin)
 //            if(titlestemp.count == regexes.count){
 //
                 for (index,_) in regexes.enumerated(){
-                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let title = self.matches(for: RegexConst.titleRegex,in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: RegexConst.imageRegex, in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: RegexConst.videoLinkRegex, in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                     let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
@@ -197,14 +181,14 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
-            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            let titlestemp = self.matches(for: RegexConst.titlestempRegex,in: strin)
+            let regexes = self.matches(for: RegexConst.regexes, in: strin)
             if(titlestemp.count == regexes.count){
                 
                 for (index,_) in regexes.enumerated(){
-                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let title = self.matches(for: RegexConst.titleRegex,in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: RegexConst.imageRegex, in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: RegexConst.videoLinkRegex, in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                     let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
@@ -258,14 +242,14 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {(data, response, error) in
             let stringa = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
             let strin = String(stringa)
-            let titlestemp = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box-title.*[\"\']\\s*>(\\s.*?)+</div>",in: strin)
-            let regexes = self.matches(for: "<div.*class\\s*=\\s*[\"\'].*video-box four-column.*[\"\']\\s*>(.|\n|\r)*?<a href=[\"\']/watch/(.|\n|\r)*?class=[\"\']video-box-image[\"\'](.|\n|\r)*?</a>", in: strin)
+            let titlestemp = self.matches(for: RegexConst.titlestempRegex,in: strin)
+            let regexes = self.matches(for: RegexConst.regexes, in: strin)
             if(titlestemp.count == regexes.count){
                 
                 for (index,_) in regexes.enumerated(){
-                    let title = self.matches(for: ">[\\s]?.*[\\s]?<",in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let image = self.matches(for: "data-thumbnail=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    let videoLink = self.matches(for: "href=[\"\'].*?[\"\']", in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let title = self.matches(for: RegexConst.titleRegex,in: titlestemp[index])[0].replacingOccurrences(of: ">",with: "").replacingOccurrences(of: "<",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let image = self.matches(for: RegexConst.imageRegex, in: regexes[index])[0].replacingOccurrences(of: "data-thumbnail=",with: "").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let videoLink = self.matches(for: RegexConst.videoLinkRegex, in: regexes[index])[0].replacingOccurrences(of: "href=\"",with: "http://www.youporn.com").replacingOccurrences(of: "\"",with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                     let video = Video(link: videoLink, imageLink: image, title: title)
                     self.videos.append(video)
                 }
@@ -318,10 +302,10 @@ class ViewController: UIViewController {
     }
     
     func searchButton(_ index: Int){
-        let button = UIButton(type: UIButtonType.system)
+        let button = UIButton(type: UIButton.ButtonType.system)
         button.backgroundColor = UIColor.black
         button.frame =  calculatePosition(index)
-        button.setTitle("Search", for: UIControlState())
+        button.setTitle("Search", for: UIControl.State())
         //        button.tag = index + 1)
         button.addTarget(self, action: #selector(ViewController.search(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
@@ -330,10 +314,10 @@ class ViewController: UIViewController {
     
     
     func homeButton(_ index: Int){
-        let button = UIButton(type: UIButtonType.system)
+        let button = UIButton(type: UIButton.ButtonType.system)
         button.backgroundColor = UIColor.black
         button.frame =  calculatePosition(index)
-        button.setTitle("Home", for: UIControlState())
+        button.setTitle("Home", for: UIControl.State())
         //        button.tag = index + 1)
         button.addTarget(self, action: #selector(ViewController.home(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
@@ -342,7 +326,7 @@ class ViewController: UIViewController {
     
     
     func sortButton(_ index: Int,text: Selector){
-        let button = UIButton(type: UIButtonType.system)
+        let button = UIButton(type: UIButton.ButtonType.system)
         let title = text.description.replacingOccurrences(of: ":", with: "")
         if(selectedSort == title)
         {
@@ -351,7 +335,7 @@ class ViewController: UIViewController {
             button.backgroundColor = UIColor.black
         }
         button.frame =  calculatePosition(index)
-        button.setTitle(title,for: UIControlState())
+        button.setTitle(title,for: UIControl.State())
         //        button.tag = index + 1)
         button.addTarget(self, action: text, for: .primaryActionTriggered)
         
@@ -411,10 +395,10 @@ class ViewController: UIViewController {
     
     
     func nextButton(_ index: Int){
-        let button = UIButton(type: UIButtonType.system)
+        let button = UIButton(type: UIButton.ButtonType.system)
         button.backgroundColor = UIColor.black
         button.frame =  calculatePosition(index)
-        button.setTitle("Next Page", for: UIControlState())
+        button.setTitle("Next Page", for: UIControl.State())
         button.tag = index
         button.addTarget(self, action: #selector(ViewController.next(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
@@ -434,10 +418,10 @@ class ViewController: UIViewController {
     
     
     func previousButton(_ index: Int){
-        let button = UIButton(type: UIButtonType.system)
-        print(calculatePosition(index))
+        let button = UIButton(type: UIButton.ButtonType.system)
+        //print(calculatePosition(index))
         button.frame =  calculatePosition(index)
-        button.setTitle("Previous Page", for: UIControlState())
+        button.setTitle("Previous Page", for: UIControl.State())
         button.tag = index
         button.addTarget(self, action: #selector(ViewController.previous(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
@@ -544,25 +528,25 @@ class ViewController: UIViewController {
         let numImagePerRow = Int(bounds.width) / (Int(image.size.width) + 20)
         let width = image.size.width
         let height = image.size.height
-        print(height)
-        print(width)
+        //print(height)
+        //print(width)
         let x = (index % numImagePerRow) * Int(width) + 20 * (index % numImagePerRow + 1)
         let y = index / numImagePerRow * Int(height) + 20 * (index / numImagePerRow + 1)
         return CGRect(x: CGFloat(x), y: CGFloat(y), width: width, height: height)
     }
     
     func createButton(_ image: UIImage, index: Int,video: Video){
-        let button = UIButton(type: UIButtonType.system)
-        button.contentVerticalAlignment = UIControlContentVerticalAlignment.bottom
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.contentVerticalAlignment = UIControl.ContentVerticalAlignment.bottom
         button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.titleLabel?.backgroundColor = UIColor.black
-        button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), for: UIControlState())
+        button.setTitleColor(UIColor(red: 236.0/255.0, green: 86.0/255.0, blue: 124.0/255.0, alpha: 1.0), for: UIControl.State())
         button.titleLabel?.font = UIFont(name: "Times New Roman", size: 25)
-        button.setTitle(String(htmlEncodedString: video.Title), for: UIControlState())
+        button.setTitle(String(htmlEncodedString: video.Title), for: UIControl.State())
         button.titleLabel?.text = video.Title
-        button.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         button.frame =  calculatePosition(index, image: image)
-        button.setBackgroundImage(image, for: UIControlState())
+        button.setBackgroundImage(image, for: UIControl.State())
         button.tag = index - 11
         button.addTarget(self, action: #selector(ViewController.tapped(_:)), for: .primaryActionTriggered)
         button.clipsToBounds = true
